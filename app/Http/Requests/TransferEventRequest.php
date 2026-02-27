@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class TransferEventRequest extends FormRequest
 {
@@ -29,6 +31,16 @@ class TransferEventRequest extends FormRequest
             'events.*.status'           => ['required', 'string'],
             'events.*.created_at'       => ['required', 'date'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Batch rejected due to validation errors.',
+                'errors'  => $validator->errors(),
+            ], 400)
+        );
     }
 
     protected function passedValidation(): void
