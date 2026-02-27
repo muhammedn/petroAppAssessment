@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('transfer_events', function (Blueprint $table) {
             $table->id();
             $table->string('event_id')->unique();
-            $table->string('station_id')->index();
+            $table->string('station_id');
             $table->decimal('amount', 12, 4);
             $table->string('status');
             $table->timestamp('event_created_at');
             $table->timestamps();
+
+            $table->index('station_id');
+            $table->index(['station_id', 'status']);
         });
     }
 
