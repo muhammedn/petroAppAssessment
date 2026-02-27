@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - sqlite_data:/app/database
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/stations/health/summary"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  sqlite_data:
