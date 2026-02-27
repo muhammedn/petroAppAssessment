@@ -74,7 +74,7 @@ class TransferEventController extends Controller
                 content: new OA\JsonContent(ref: '#/components/schemas/BatchInsertResponse')
             ),
             new OA\Response(
-                response: 422,
+                response: 400,
                 description: 'Validation error',
                 content: new OA\JsonContent(ref: '#/components/schemas/ValidationErrorResponse')
             ),

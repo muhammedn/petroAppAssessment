@@ -9,7 +9,7 @@ services:
       - APP_ENV=production
       - APP_DEBUG=false
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/stations/health/summary"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/up"]
       interval: 10s
       timeout: 5s
       retries: 3
