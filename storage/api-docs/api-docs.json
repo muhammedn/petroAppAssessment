@@ -1,0 +1,195 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "PetroApp Transfer Events API",
+        "description": "API for managing transfer events",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/transfers": {
+            "post": {
+                "tags": [
+                    "Transfer Events"
+                ],
+                "summary": "Batch insert transfer events",
+                "description": "Accepts an array of transfer events and inserts them in bulk. Duplicate event_ids are silently ignored.",
+                "operationId": "487814575a98be307e109537d9e64b0e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "events"
+                                ],
+                                "properties": {
+                                    "events": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/components/schemas/TransferEventInput"
+                                        },
+                                        "minItems": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Batch processed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BatchInsertResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stations/{station_id}/summary": {
+            "get": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Get station summary",
+                "description": "Returns the total approved transfer amount and total event count for a given station.",
+                "operationId": "19b3f6edd50286fec1d579b98269f9e1",
+                "parameters": [
+                    {
+                        "name": "station_id",
+                        "in": "path",
+                        "description": "The unique identifier of the station",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "STN-42"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Station summary retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StationSummaryResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "TransferEventInput": {
+                "required": [
+                    "event_id",
+                    "station_id",
+                    "amount",
+                    "status",
+                    "created_at"
+                ],
+                "properties": {
+                    "event_id": {
+                        "type": "string",
+                        "example": "EVT-001"
+                    },
+                    "station_id": {
+                        "type": "string",
+                        "example": "STN-42"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 150.75
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "approved"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-02-27T10:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "BatchInsertResponse": {
+                "properties": {
+                    "inserted": {
+                        "type": "integer",
+                        "example": 95
+                    },
+                    "duplicates": {
+                        "type": "integer",
+                        "example": 5
+                    }
+                },
+                "type": "object"
+            },
+            "StationSummaryResponse": {
+                "properties": {
+                    "station_id": {
+                        "type": "string",
+                        "example": "STN-42"
+                    },
+                    "total_approved_amount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 14275.5
+                    },
+                    "events_count": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationErrorResponse": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "The events field is required."
+                    },
+                    "errors": {
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Transfer Events",
+            "description": "Transfer Events"
+        },
+        {
+            "name": "Stations",
+            "description": "Stations"
+        }
+    ]
+}

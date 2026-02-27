@@ -22,12 +22,23 @@ class TransferEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'events'                        => ['required', 'array', 'min:1'],
-            'events.*.event_id'             => ['required', 'string'],
-            'events.*.station_id'           => ['required', 'string'],
-            'events.*.amount'               => ['required', 'numeric', 'min:0'],
-            'events.*.status'               => ['required', 'string'],
-            'events.*.event_created_at'     => ['required', 'date'],   
+            'events'                    => ['required', 'array', 'min:1'],
+            'events.*.event_id'         => ['required', 'string'],
+            'events.*.station_id'       => ['required', 'string'],
+            'events.*.amount'           => ['required', 'numeric', 'min:0'],
+            'events.*.status'           => ['required', 'string'],
+            'events.*.created_at'       => ['required', 'date'],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'events' => collect($this->events)->map(function ($event) {
+                $event['event_created_at'] = $event['created_at'];
+                unset($event['created_at']);
+                return $event;
+            })->all(),
+        ]);
     }
 }
