@@ -30,7 +30,7 @@ A Laravel 12 API for ingesting station transfer events with idempotent, concurre
 ```bash
 # 1. Clone the repo
 git clone <https://github.com/muhammedn/petroAppAssessment>
-cd station-transfers
+cd petroAppAssessment
 
 # 2. Install dependencies + setup DB (one command)
 make install
