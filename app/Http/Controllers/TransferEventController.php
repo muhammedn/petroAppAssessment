@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TransferEventRequest;
 use App\Services\Contracts\TransferEventServiceInterface;
+use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -41,12 +42,9 @@ use OpenApi\Attributes as OA;
 )]
 class TransferEventController extends Controller
 {
-    protected TransferEventServiceInterface $transferEventService;
-
-    public function __construct(TransferEventServiceInterface $transferEventService) 
-    {
-        $this->transferEventService = $transferEventService;
-    }
+    public function __construct(
+        protected TransferEventServiceInterface $transferEventService
+    ) {}
 
     #[OA\Post(
         path: '/transfers',
@@ -80,9 +78,9 @@ class TransferEventController extends Controller
             ),
         ]
     )]
-    public function store(TransferEventRequest $request)
+    public function store(TransferEventRequest $request): JsonResponse
     {
-        $result = $this->transferEventService->insertBatch($request->events);
+        $result = $this->transferEventService->insertBatch($request->input('events'));
         return response()->json($result, 201);
     }
 
@@ -108,7 +106,7 @@ class TransferEventController extends Controller
             ),
         ]
     )]
-    public function summary(string $stationId)
+    public function summary(string $stationId): JsonResponse
     {
         $summary = $this->transferEventService->getSummary($stationId);
         return response()->json($summary);

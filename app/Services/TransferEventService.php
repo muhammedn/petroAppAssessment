@@ -8,13 +8,9 @@ use Illuminate\Support\Facades\Log;
 
 class TransferEventService implements TransferEventServiceInterface
 {
-
-    protected TransferEventRepositoryInterface $transferEventRepository;
-
-    public function __construct(TransferEventRepositoryInterface $transferEventRepository) 
-    {
-        $this->transferEventRepository = $transferEventRepository;
-    }
+    public function __construct(
+        protected TransferEventRepositoryInterface $transferEventRepository
+    ) {}
 
     public function insertBatch(array $events): array
     {

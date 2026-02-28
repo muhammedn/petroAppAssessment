@@ -8,15 +8,22 @@ use Illuminate\Support\Facades\DB;
 
 class EloquentTransferEventRepository implements TransferEventRepositoryInterface
 {
+    private const BATCH_SIZE = 1000;
 
-    public function insertBatch(array $events, int $batchSize = 1000): array
+    public function insertBatch(array $events): array
     {
-        return DB::transaction(function () use ($events, $batchSize) {
+        return DB::transaction(function () use ($events) {
             $inserted   = 0;
             $duplicates = 0;
+            $now        = now();
 
-            foreach (array_chunk($events, $batchSize) as $chunk) {
+            foreach (array_chunk($events, self::BATCH_SIZE) as $chunk) {
                 $attempted = count($chunk);
+
+                $chunk = array_map(fn ($e) => array_merge($e, [
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]), $chunk);
 
                 $affected = TransferEvent::insertOrIgnore($chunk);
 

@@ -270,7 +270,7 @@ To switch from SQLite to any DB/Storage:
 No changes are required in controllers or services.
 
 
-### Storage Swappability
+### Test Coverage
 
 The test validates:
 
@@ -298,11 +298,9 @@ app/
 └── Services/
     ├── Contracts/TransferEventServiceInterface.php
     └── TransferEventService.php
-config/
-└── l5-swagger.php
+
 database/
 └── migrations/
-    └── ..._create_transfer_events_table.php
 routes/
 └── api.php
 storage/

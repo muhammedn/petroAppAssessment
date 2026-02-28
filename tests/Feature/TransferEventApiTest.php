@@ -115,7 +115,7 @@ test('non-approved statuses are stored but excluded from total_approved_amount',
         makeEvent(['event_id' => 'e1', 'amount' => 100.0, 'status' => 'approved']),
         makeEvent(['event_id' => 'e2', 'amount' => 500.0, 'status' => 'pending']),
         makeEvent(['event_id' => 'e3', 'amount' => 250.0, 'status' => 'rejected']),
-        makeEvent(['event_id' => 'e4', 'amount' => 75.0,  'status' => 'unknown_status']),
+        makeEvent(['event_id' => 'e4', 'amount' => 75.0,  'status' => 'cancelled']),
     ];
 
     $this->postJson('/api/transfers', ['events' => $events])->assertStatus(201);

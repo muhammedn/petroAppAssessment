@@ -15,7 +15,7 @@ class TransferEvent extends Model
     ];
 
     protected $casts = [
-        'amount'     => 'float',
+        'amount'           => 'decimal:4',
         'event_created_at' => 'datetime',
     ];
 

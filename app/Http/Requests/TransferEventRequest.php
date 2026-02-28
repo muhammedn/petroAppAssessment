@@ -24,7 +24,7 @@ class TransferEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'events'                    => ['required', 'array', 'min:1'],
+            'events'                    => ['required', 'array', 'min:1', 'max:10000'],
             'events.*.event_id'         => ['required', 'string'],
             'events.*.station_id'       => ['required', 'string'],
             'events.*.amount'           => ['required', 'numeric', 'min:0'],
